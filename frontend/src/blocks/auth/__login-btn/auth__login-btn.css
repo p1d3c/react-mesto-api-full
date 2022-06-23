@@ -1,0 +1,12 @@
+.auth__login-btn {
+  border: 0;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+
+.auth__login-btn:hover {
+  opacity: .8;
+}

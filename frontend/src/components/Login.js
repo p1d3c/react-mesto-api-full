@@ -1,0 +1,38 @@
+import React, { useState } from 'react';
+
+function Login(props) {
+  const [inputValues, setInputValues] = useState({ email: '', password: '' })
+
+  const handleChange = (e) => {
+    setInputValues({
+      ...inputValues,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.handleLogin(inputValues, setInputValues);
+  }
+
+  return (
+    <>
+      <h2 className="auth__title">Вход</h2>
+      <form className="auth__form" onSubmit={handleSubmit}>
+        <fieldset className="auth__form-set">
+          <label className="auth__form-field">
+            <input id="email-input" type="text" className="auth__input auth__input_type_email" value={inputValues.email} onChange={handleChange} name="email" placeholder="Email" minLength="2" maxLength="40" required />
+            <span className="auth__input-error email-input-error"></span>
+          </label>
+          <label className="auth__form-field">
+            <input id="password-input" type="password" className="auth__input auth__input_type_password" value={inputValues.password} onChange={handleChange} name="password" placeholder="Пароль" minLength="2" maxLength="200" required />
+            <span className="auth__input-error password-input-error"></span>
+          </label>
+          <button type="submit" className="auth__submit" name={`auth-submit`}>Войти</button>
+        </fieldset>
+      </form>
+    </>
+  )
+}
+
+export default Login;

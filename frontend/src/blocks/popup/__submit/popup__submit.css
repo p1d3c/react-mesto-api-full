@@ -1,0 +1,35 @@
+.popup__submit {
+  border: 0;
+  border-radius: 2px;
+  background-color: black;
+  opacity: 1;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 21.78px;
+  max-width: 358px;
+  width: 100%;
+  height: 50px;
+  padding: 0;
+  color: white;
+  margin: 31px 36px 37px 36px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: opacity .2s ease;
+}
+
+.popup__submit:hover {
+  opacity: .8;
+}
+
+.popup__form_type_del-confirm .popup__submit {
+  margin-top: 13px;
+}
+
+@media screen and (max-width:640px) {
+  .popup__submit {
+    max-width: 238px;
+    height: 46px;
+    margin: 45px 22px 25px 22px;
+  }
+}
