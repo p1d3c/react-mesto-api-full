@@ -51,9 +51,7 @@ function App() {
     }
   }
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser.id)
-
+  function handleCardLike(card, isLiked) {
     api.changeLikeCardStatus({
       cardId: card._id,
       isLiked: !isLiked
@@ -103,10 +101,11 @@ function App() {
   function handleUpdateUser({ name, about }) {
     api.setUserInfo({ name, about })
       .then((res) => {
+        const { name, about } = res.data;
         setCurrentUser({
           ...currentUser,
-          name: res.name,
-          about: res.about
+          name: name,
+          about: about
         });
         closeAllPopups();
       })
@@ -118,8 +117,10 @@ function App() {
   function handleUpdateAvatar({ avatar }) {
     api.changeAvatar({ avatarPopupInputValue: avatar })
       .then((res) => {
+        const { avatar } = res.data;
         setCurrentUser({
-          avatar: res.avatar
+          ...currentUser,
+          avatar: avatar
         });
         closeAllPopups();
       })
@@ -172,6 +173,7 @@ function App() {
   function handleRegister(inputValues, setInputValues) {
     auth.register(inputValues.email, inputValues.password)
     .then((res) => {
+      console.log(res)
       if (res) {
         setIsError(false);
         setIsInfoTooltipOpen(true);
@@ -200,6 +202,7 @@ function App() {
 
   useEffect(() => {
     tokenCheck();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -208,7 +211,7 @@ function App() {
     }
     api.getInitialCards()
       .then((res) => {
-        setCards(res)
+        setCards(res.data.reverse())
       })
       .catch((err) => {
         console.log(err);
@@ -221,18 +224,19 @@ function App() {
     }
     api.getUserInfo()
       .then((res) => {
+        const { name, about, avatar, _id } = res.data;
         setCurrentUser({
           ...currentUser,
-          name: res.name,
-          about: res.about,
-          avatar: res.avatar,
-          id: res._id,
-          cohort: res.cohort
+          name: name,
+          about: about,
+          avatar: avatar,
+          id: _id,
         })
       })
       .catch((err) => {
         console.log(err);
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn])
 
   useEffect(() => {

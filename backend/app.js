@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const { isAuthorized } = require('./middlewares/auth');
@@ -8,36 +9,23 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 
+const app = express();
+
 const allowedCors = [
-  'localhost:3000',
+  'http://p1d3c.mesto.nomoredomains.xyz',
+  'https://p1d3c.mesto.nomoredomains.xyz',
+  'http://localhost:3001',
 ];
 
-const app = express();
+app.use(
+  cors({
+    origin: allowedCors,
+  }),
+);
 
 app.use(express.json());
 
 app.use(requestLogger);
-
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Contorl-Allow-Origin', origin);
-  }
-  next();
-});
-
-app.use((req, res) => {
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  const requestHeaders = req.headers['access-control-request-headers'];
-
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-
-    res.end();
-  }
-});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
