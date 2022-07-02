@@ -12,20 +12,16 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-// const allowedCors = [
-//   'http://p1d3c.mesto.nomoredomains.xyz',
-//   'https://p1d3c.mesto.nomoredomains.xyz',
-//   'http://localhost:3001',
-// ];
-
-// app.use(
-//   cors({
-//     origin: allowedCors,
-//   }),
-// );
+const allowedCors = [
+  'http://p1d3c.mesto.nomoredomains.xyz',
+  'https://p1d3c.mesto.nomoredomains.xyz',
+  'http://localhost:3001',
+];
 
 app.use(
-  cors(),
+  cors({
+    origin: allowedCors,
+  }),
 );
 
 app.use(express.json());
