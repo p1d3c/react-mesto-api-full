@@ -19,9 +19,6 @@ export const register = (email, password) => {
         return (e)
       }
     })
-    .then((res) => {
-      return res;
-    })
 }
 
 export const authorize = (email, password) => {

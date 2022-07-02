@@ -63,7 +63,7 @@ module.exports.likeCard = async (req, res, next) => {
       next(new NotFound('Карточка не найдена'));
       return;
     }
-    res.status(200).send({ message: 'Лайк поставлен' });
+    res.status(200).send({ newCard: card, message: 'Лайк поставлен' });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Передан несуществующий id'));
@@ -84,7 +84,7 @@ module.exports.dislikeCard = async (req, res, next) => {
       next(new NotFound('Карточка не найдена'));
       return;
     }
-    res.status(200).send({ message: 'Лайк снят' });
+    res.status(200).send({ newCard: card, message: 'Лайк снят' });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Передан несуществующий id'));

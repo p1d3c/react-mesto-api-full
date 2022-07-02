@@ -56,7 +56,8 @@ function App() {
       cardId: card._id,
       isLiked: !isLiked
     })
-      .then((newCard) => {
+      .then((data) => {
+        const { newCard } = data;
         setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
       })
       .catch((err) => {
@@ -173,7 +174,6 @@ function App() {
   function handleRegister(inputValues, setInputValues) {
     auth.register(inputValues.email, inputValues.password)
     .then((res) => {
-      console.log(res)
       if (res) {
         setIsError(false);
         setIsInfoTooltipOpen(true);

@@ -1,1 +1,3 @@
-export const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYmYyMzYzMmY3MDY0NWVhYTY0NDU0NCIsImlhdCI6MTY1NjY5MzczNn0.eCVaWTQfF5oY_CJ3soWC18WlIa3mhChEqwf5QDVtS_0';
+export function getToken() {
+  return localStorage.getItem('jwt')
+}

@@ -1,9 +1,8 @@
-import { token } from './utils';
+import { getToken } from './utils';
 
 class Api {
-  constructor({ baseUrl, headers, renderCardsCallback, setUserInfoCallback, addNewCardCallback }) {
+  constructor({ baseUrl, renderCardsCallback, setUserInfoCallback, addNewCardCallback }) {
     this._baseUrl = baseUrl;
-    this._headers = headers;
     this._renderCardsCallback = renderCardsCallback;
     this._setUserInfoCallback = setUserInfoCallback;
     this._addNewCardCallback = addNewCardCallback;
@@ -16,9 +15,16 @@ class Api {
     return res.json();
   }
 
+  _getHeaders() {
+    return {
+      authorization: `Bearer ${getToken()}`,
+      'Content-Type': 'application/json; charset=UTF-8'
+    }
+  }
+
   getInitialCards() {
     return fetch(this._baseUrl + '/cards', {
-      headers: this._headers
+      headers: this._getHeaders()
     })
     .then((res) => {
       return this._getResponseData(res);
@@ -27,7 +33,7 @@ class Api {
 
   getUserInfo() {
     return fetch(this._baseUrl + '/users/me', {
-      headers: this._headers
+      headers: this._getHeaders()
     })
     .then((res) => {
       return this._getResponseData(res);
@@ -37,7 +43,7 @@ class Api {
   setUserInfo({ name, about }) {
     return fetch(this._baseUrl + '/users/me', {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({ name, about })
     })
     .then((res) => {
@@ -48,7 +54,7 @@ class Api {
   addCard({ name, link }) {
     return fetch(this._baseUrl + '/cards', {
       method: 'POST',
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
         name: name,
         link: link
@@ -62,7 +68,7 @@ class Api {
   delCard({ cardId }) {
     return fetch(this._baseUrl + `/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: this._getHeaders()
     })
     .then((res) => {
       return this._getResponseData(res);
@@ -73,7 +79,7 @@ class Api {
     if (isLiked) {
       return fetch(this._baseUrl + `/cards/${cardId}/likes`, {
         method: 'PUT',
-        headers: this._headers
+        headers: this._getHeaders()
       })
       .then((res) => {
         return this._getResponseData(res);
@@ -81,7 +87,7 @@ class Api {
     } else {
       return fetch(this._baseUrl + `/cards/${cardId}/likes`, {
         method: 'DELETE',
-        headers: this._headers
+        headers: this._getHeaders()
       })
       .then((res) => {
         return this._getResponseData(res);
@@ -92,7 +98,7 @@ class Api {
   changeAvatar({ avatarPopupInputValue }) {
     return fetch(this._baseUrl + `/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
         avatar: avatarPopupInputValue
       })
@@ -104,11 +110,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'http://localhost:3000',
-  headers: {
-    authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json; charset=UTF-8'
-  }
+  baseUrl: process.env.baseUrl || 'http://localhost:3000'
 })
 
 export default api;
