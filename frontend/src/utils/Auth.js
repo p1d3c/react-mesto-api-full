@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.p1d3c.mesto.nomoredomains.xyz';
+import { BASE_URL } from './utils';
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {

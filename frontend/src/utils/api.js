@@ -1,4 +1,4 @@
-import { getToken } from './utils';
+import { getToken, BASE_URL } from './utils';
 
 class Api {
   constructor({ baseUrl, renderCardsCallback, setUserInfoCallback, addNewCardCallback }) {
@@ -110,7 +110,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://api.p1d3c.mesto.nomoredomains.xyz'
+  baseUrl: BASE_URL
 })
 
 export default api;
