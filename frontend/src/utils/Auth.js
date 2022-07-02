@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.p1d3c.mesto.nomoredomains.xyz/signin';
+export const BASE_URL = 'https://api.p1d3c.mesto.nomoredomains.xyz';
 
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {

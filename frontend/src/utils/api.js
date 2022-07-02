@@ -110,7 +110,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://api.p1d3c.mesto.nomoredomains.xyz/signin'
+  baseUrl: 'https://api.p1d3c.mesto.nomoredomains.xyz'
 })
 
 export default api;
