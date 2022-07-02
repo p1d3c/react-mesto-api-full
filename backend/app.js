@@ -25,7 +25,7 @@ const app = express();
 // );
 
 app.use(
-  cors('*'),
+  cors(),
 );
 
 app.use(express.json());
