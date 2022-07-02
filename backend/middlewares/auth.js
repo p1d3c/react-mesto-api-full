@@ -1,14 +1,12 @@
+const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const Unauthorized = require('../errors/Unauthorized');
 
-const JWT_SECRET = 'ioausdghfiuSDUHGfggabsdfjkmn';
-
-const getToken = (id) => jwt.sign({ id }, JWT_SECRET);
+const getToken = (id) => jwt.sign({ id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
 
 const isAuthorized = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    // res.status(401).send({ message: 'Необходима авторизация' });
     next(new Unauthorized('Необходима авторизация'));
     return;
   }
@@ -17,15 +15,9 @@ const isAuthorized = async (req, res, next) => {
   try {
     payload = await jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    // res.status(401).send({ message: 'Необходима авторизация' });
     next(new Unauthorized('Необходима авторизация'));
   }
   req.user = payload;
-  // const { cookie } = req.headers;
-  // if (!cookie || !cookie.startsWith('jwt=')) {
-  //   res.status(401).send({ message: 'Необходима атворизация' });
-  //   return;
-  // }
   next();
 };
 
