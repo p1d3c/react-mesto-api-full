@@ -112,5 +112,5 @@ class Api {
 const api = new Api({
   baseUrl: process.env.baseUrl || 'http://localhost:3000'
 })
-
+console.log(process.env.baseUrl)
 export default api;
