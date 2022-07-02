@@ -1,5 +1,5 @@
-export const BASE_URL = process.env.baseUrl || 'http://localhost:3000';
-
+export const BASE_URL = 'https://api.p1d3c.mesto.nomoredomains.xyz/signin';
+console.log(BASE_URL)
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',

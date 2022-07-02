@@ -110,7 +110,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: process.env.baseUrl || 'http://localhost:3000'
+  baseUrl: 'https://api.p1d3c.mesto.nomoredomains.xyz/signin'
 })
-console.log(process.env.baseUrl)
+
 export default api;
