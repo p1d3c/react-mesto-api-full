@@ -18,13 +18,13 @@ const allowedCors = [
   'http://localhost:3001',
 ];
 
+app.use(express.json());
+
 app.use(
   cors({
     origin: allowedCors,
   }),
 );
-
-app.use(express.json());
 
 app.use(requestLogger);
 
