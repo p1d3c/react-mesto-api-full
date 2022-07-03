@@ -11,7 +11,7 @@ const SALT_ROUNDS = 10;
 module.exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find({});
-    res.status(200).send({ data: users });
+    res.send({ data: users });
   } catch (err) {
     next(err);
   }
@@ -24,13 +24,13 @@ module.exports.getUserById = async (req, res, next) => {
       next(new NotFound('Пользователь не найден'));
       return;
     }
-    res.status(200).send({ data: user });
+    res.send({ data: user });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Некорректный id пользователя'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -44,23 +44,19 @@ module.exports.createUser = async (req, res, next) => {
       next(new Conflict('Пользователь уже существует'));
       return;
     }
-    if (!password) {
-      next(new BadRequest('Пароль не указан'));
-      return;
-    }
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
     let newUser = await User.create({
       email, password: hash, name, about, avatar,
     });
     newUser = newUser.toObject();
     delete newUser.password;
-    res.status(200).send({ data: newUser });
+    res.status(201).send({ data: newUser });
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequest('Переданы некоректные данные'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -72,7 +68,7 @@ module.exports.updateUserProfile = async (req, res, next) => {
       { name, about },
       { new: true, runValidators: true },
     );
-    res.status(200).send({ data: updatedUser });
+    res.send({ data: updatedUser });
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequest(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
@@ -82,7 +78,7 @@ module.exports.updateUserProfile = async (req, res, next) => {
       next(new BadRequest('Пользователь не найден'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -94,7 +90,7 @@ module.exports.updateUserAvatar = async (req, res, next) => {
       { avatar },
       { new: true, runValidators: true },
     );
-    res.status(200).send({ data: updatedUser });
+    res.send({ data: updatedUser });
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequest('Переданы некорректные данные'));
@@ -104,16 +100,12 @@ module.exports.updateUserAvatar = async (req, res, next) => {
       next(new BadRequest('Пользователь не найден'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
 module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    next(new BadRequest('Неправильные логин или пароль'));
-    return;
-  }
   try {
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
@@ -128,18 +120,13 @@ module.exports.login = async (req, res, next) => {
 
     const token = await getToken(user._id);
 
-    res.status(200).send({ token });
-    // res.status(200).cookie('jwt', token, {
-    //   maxAge: 3600000 * 24 * 7,
-    //   httpOnly: true,
-    // })
-    //   .end();
+    res.send({ token });
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequest('Неправильные логин или пароль'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -147,8 +134,8 @@ module.exports.getMyProfile = async (req, res, next) => {
   try {
     const { id } = req.user;
     const user = await User.findById(id);
-    res.status(200).send({ data: user });
+    res.send({ data: user });
   } catch (err) {
-    next();
+    next(err);
   }
 };

@@ -6,7 +6,7 @@ const Card = require('../models/card');
 module.exports.getCards = async (req, res, next) => {
   try {
     const cards = await Card.find({});
-    res.status(200).send({ data: cards });
+    res.send({ data: cards });
   } catch (err) {
     next();
   }
@@ -25,7 +25,7 @@ module.exports.createCard = async (req, res, next) => {
       next(new BadRequest('Ошибка валидации'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -42,13 +42,13 @@ module.exports.deleteCard = async (req, res, next) => {
       return;
     }
     await Card.findByIdAndRemove(req.params.cardId);
-    res.status(200).send({ message: 'Карточка успешно удалена' });
+    res.send({ message: 'Карточка успешно удалена' });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Некорректный id карточки'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -63,13 +63,13 @@ module.exports.likeCard = async (req, res, next) => {
       next(new NotFound('Карточка не найдена'));
       return;
     }
-    res.status(200).send({ newCard: card, message: 'Лайк поставлен' });
+    res.send({ newCard: card, message: 'Лайк поставлен' });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Передан несуществующий id'));
       return;
     }
-    next();
+    next(err);
   }
 };
 
@@ -84,12 +84,12 @@ module.exports.dislikeCard = async (req, res, next) => {
       next(new NotFound('Карточка не найдена'));
       return;
     }
-    res.status(200).send({ newCard: card, message: 'Лайк снят' });
+    res.send({ newCard: card, message: 'Лайк снят' });
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Передан несуществующий id'));
       return;
     }
-    next();
+    next(err);
   }
 };
