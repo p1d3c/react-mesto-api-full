@@ -16,6 +16,9 @@ const allowedCors = [
   'http://p1d3c.mesto.nomoredomains.xyz',
   'https://p1d3c.mesto.nomoredomains.xyz',
   'http://localhost:3001',
+  'https://localhost:3001',
+  'http://localhost:3000',
+  'https://localhost:3000',
 ];
 
 app.use(express.json());
