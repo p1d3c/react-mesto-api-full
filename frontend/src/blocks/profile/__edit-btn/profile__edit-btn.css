@@ -1,5 +1,5 @@
 .profile__edit-btn {
-  background-image: url(../../../images/edit-btn.svg);
+  background-image: url('../../../images/edit-btn.svg');
   background-repeat: no-repeat;
   width: 24px;
   height: 24px;
@@ -18,7 +18,7 @@
 
 @media screen and (max-width:340px) {
   .profile__edit-btn {
-    background-image: url(../../../images/edit-btn_320px.svg);
+    background-image: url('../../../images/edit-btn_320px.svg');
     background-repeat: no-repeat;
     margin-left: 10px;
     margin-top: 8px;
